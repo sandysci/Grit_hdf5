@@ -31,18 +31,17 @@ df =  pd.DataFrame(dictdata)
 csvfile = df.to_csv('files/'+csvfilename)
 #
 file = h5py.File('files/'+hdf5filename,'w')
-file.create_dataset("dset",(17, len(dictdata['Voltage3'])), h5py.h5t.STD_I32BE,)
+file.create_dataset("dset",(17, len(dictdata['Voltage3'])), 'f8')
 file.close()
-
 file2 = h5py.File('files/'+hdf5filename,'r+')
 
 dataset2= file2['/dset']
-item = 0
-for c in dictdata:
-	value.insert(item,dictdata[c])
-	item = item +1
-print value
-alldata = np.array(value)
+# for c in dictdata.keys():
+# 	dataset2.attrs[c] = c
+
+# print dataset2.attrs
+
+alldata = np.array(dictdata.values())
 alldata2 = alldata.astype(np.float)
 dataset2[...] = alldata2
 file2.close()
